@@ -10,7 +10,6 @@ import { getCurrentUser } from '../util/APIUtils';
 import { ACCESS_TOKEN } from '../constants';
 
 import PollList from '../poll/PollList';
-import NewPoll from '../poll/NewPoll';
 import Login from '../user/login/Login';
 import Signup from '../user/signup/Signup';
 import Profile from '../user/profile/Profile';
@@ -19,6 +18,7 @@ import NotFound from '../common/NotFound';
 import LoadingIndicator from '../common/LoadingIndicator';
 import PrivateRoute from '../common/PrivateRoute';
 import Mypage from '../mypage/Mypage'
+import NewPoll from '../poll/NewPoll';
 
 import { Layout, notification } from 'antd';
 const { Content } = Layout;
@@ -43,9 +43,11 @@ class App extends Component {
   }
 
   loadCurrentUser() {
+
     this.setState({
       isLoading: true
     });
+
     getCurrentUser()
       .then(response => {
         this.setState({
@@ -58,6 +60,7 @@ class App extends Component {
           isLoading: false
         });
       });
+
   }
 
   componentDidMount() {
@@ -95,6 +98,7 @@ class App extends Component {
     if (this.state.isLoading) {
       return <LoadingIndicator />
     }
+
     return (
       <Layout className="app-container">
         <AppHeader isAuthenticated={this.state.isAuthenticated}
@@ -103,34 +107,35 @@ class App extends Component {
 
         <Content className="app-content">
           <div className="container">
-            <button ><a href="/mypage"> 마페 </a></button>
+
             <Switch>
-
-              <PrivateRoute authenticated={this.state.isAuthenticated} path="/mypage" component={Mypage} handleLogout={this.handleLogout}></PrivateRoute>
-
 
               <Route exact path="/"
                 render={(props) => <PollList isAuthenticated={this.state.isAuthenticated}
                   currentUser={this.state.currentUser} handleLogout={this.handleLogout} {...props} />}>
               </Route>
 
-
-
               <Route path="/login"
-                render={(props) => <Login onLogin={this.handleLogin} {...props} />}></Route>
+                render={(props) => <Login onLogin={this.handleLogin} {...props} />}>
+              </Route>
+
+
               <Route path="/signup" component={Signup}></Route>
+
               <Route path="/users/:username"
                 render={(props) => <Profile isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} {...props} />}>
               </Route>
+
               <PrivateRoute authenticated={this.state.isAuthenticated} path="/poll/new" component={NewPoll} handleLogout={this.handleLogout}></PrivateRoute>
-
-
-
+              <PrivateRoute authenticated={this.state.isAuthenticated} path="/mypage" component={Mypage} ></PrivateRoute>
 
               <Route component={NotFound}></Route>
+
             </Switch>
+
           </div>
         </Content>
+
       </Layout>
     );
   }

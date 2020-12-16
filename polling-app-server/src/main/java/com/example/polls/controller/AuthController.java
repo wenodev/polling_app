@@ -32,6 +32,7 @@ import java.util.Collections;
 /**
  * Created by rajeevkumarsingh on 02/08/17.
  */
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -62,8 +63,8 @@ public class AuthController {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         String jwt = tokenProvider.generateToken(authentication);
+
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 

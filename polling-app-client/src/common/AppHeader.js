@@ -34,6 +34,11 @@ class AppHeader extends Component {
             <img src={pollIcon} alt="poll" className="poll-icon" />
           </Link>
         </Menu.Item>,
+        <Menu.Item key="/mypage">
+          <Link to="/mypage">
+            <span>mypage</span>
+          </Link>
+        </Menu.Item>,
         <Menu.Item key="/profile" className="profile-menu">
           <ProfileDropdownMenu
             currentUser={this.props.currentUser}
@@ -73,6 +78,7 @@ class AppHeader extends Component {
 function ProfileDropdownMenu(props) {
   const dropdownMenu = (
     <Menu onClick={props.handleMenuClick} className="profile-dropdown-menu">
+
       <Menu.Item key="user-info" className="dropdown-item" disabled>
         <div className="user-full-name-info">
           {props.currentUser.name}
@@ -81,13 +87,17 @@ function ProfileDropdownMenu(props) {
           @{props.currentUser.username}
         </div>
       </Menu.Item>
+
       <Menu.Divider />
+
       <Menu.Item key="profile" className="dropdown-item">
         <Link to={`/users/${props.currentUser.username}`}>Profile</Link>
       </Menu.Item>
+
       <Menu.Item key="logout" className="dropdown-item">
         Logout
       </Menu.Item>
+
     </Menu>
   );
 

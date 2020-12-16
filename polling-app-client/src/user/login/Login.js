@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { login } from '../../util/APIUtils';
+import { login, getCurrentUser } from '../../util/APIUtils';
 import './Login.css';
 import { Link } from 'react-router-dom';
 import { ACCESS_TOKEN } from '../../constants';
@@ -8,11 +8,49 @@ import { Form, Input, Button, Icon, notification } from 'antd';
 const FormItem = Form.Item;
 
 class Login extends Component {
+
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         isAuthenticated: false,
+    //     }
+    // }
+
+
+
+    // componentDidMount() {
+
+    //     getCurrentUser()
+    //         .then(response => {
+    //             this.setState({
+    //                 isAuthenticated: true,
+    //             });
+    //         }).catch(error => {
+    //             this.setState({
+    //                 isAuthenticated: false
+    //             });
+    //         });
+    // }
+
+    componentDidMount() {
+
+    }
+
+
     render() {
+
+        console.log(window.location.pathname);
+        if (window.location.pathname != "/login") {
+            window.location.href = "/login";
+        }
+
+
+
         const AntWrappedLoginForm = Form.create()(LoginForm)
         return (
             <div className="login-container">
                 <h1 className="page-title">Login</h1>
+
                 <div className="login-content">
                     <AntWrappedLoginForm onLogin={this.props.onLogin} />
                 </div>
@@ -22,33 +60,34 @@ class Login extends Component {
 }
 
 class LoginForm extends Component {
+
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit(event) {
-        event.preventDefault();   
+        event.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 const loginRequest = Object.assign({}, values);
                 login(loginRequest)
-                .then(response => {
-                    localStorage.setItem(ACCESS_TOKEN, response.accessToken);
-                    this.props.onLogin();
-                }).catch(error => {
-                    if(error.status === 401) {
-                        notification.error({
-                            message: 'Polling App',
-                            description: 'Your Username or Password is incorrect. Please try again!'
-                        });                    
-                    } else {
-                        notification.error({
-                            message: 'Polling App',
-                            description: error.message || 'Sorry! Something went wrong. Please try again!'
-                        });                                            
-                    }
-                });
+                    .then(response => {
+                        localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+                        this.props.onLogin();
+                    }).catch(error => {
+                        if (error.status === 401) {
+                            notification.error({
+                                message: 'Polling App',
+                                description: 'Your Username or Password is incorrect. Please try again!'
+                            });
+                        } else {
+                            notification.error({
+                                message: 'Polling App',
+                                description: error.message || 'Sorry! Something went wrong. Please try again!'
+                            });
+                        }
+                    });
             }
         });
     }
@@ -61,24 +100,24 @@ class LoginForm extends Component {
                     {getFieldDecorator('usernameOrEmail', {
                         rules: [{ required: true, message: 'Please input your username or email!' }],
                     })(
-                    <Input 
-                        prefix={<Icon type="user" />}
-                        size="large"
-                        name="usernameOrEmail" 
-                        placeholder="Username or Email" />    
+                        <Input
+                            prefix={<Icon type="user" />}
+                            size="large"
+                            name="usernameOrEmail"
+                            placeholder="Username or Email" />
                     )}
                 </FormItem>
                 <FormItem>
-                {getFieldDecorator('password', {
-                    rules: [{ required: true, message: 'Please input your Password!' }],
-                })(
-                    <Input 
-                        prefix={<Icon type="lock" />}
-                        size="large"
-                        name="password" 
-                        type="password" 
-                        placeholder="Password"  />                        
-                )}
+                    {getFieldDecorator('password', {
+                        rules: [{ required: true, message: 'Please input your Password!' }],
+                    })(
+                        <Input
+                            prefix={<Icon type="lock" />}
+                            size="large"
+                            name="password"
+                            type="password"
+                            placeholder="Password" />
+                    )}
                 </FormItem>
                 <FormItem>
                     <Button type="primary" htmlType="submit" size="large" className="login-form-button">Login</Button>
@@ -87,6 +126,8 @@ class LoginForm extends Component {
             </Form>
         );
     }
+
+
 }
 
 

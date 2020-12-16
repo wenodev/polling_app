@@ -38,14 +38,12 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser) {
 
-        System.out.println(currentUser.getId());
-        System.out.println(currentUser.getName());
-        System.out.println(currentUser.getUsername());
-        System.out.println(currentUser.getAuthorities());
-        System.out.println(currentUser.getEmail());
-        System.out.println(currentUser.getPassword());
-
-
+//        System.out.println(currentUser.getId());
+//        System.out.println(currentUser.getName());
+//        System.out.println(currentUser.getUsername());
+//        System.out.println(currentUser.getAuthorities());
+//        System.out.println(currentUser.getEmail());
+//        System.out.println(currentUser.getPassword());
 
         UserSummary userSummary = new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
         return userSummary;

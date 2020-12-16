@@ -13,8 +13,8 @@ const request = (options) => {
     options = Object.assign({}, defaults, options);
 
     return fetch(options.url, options)
-        .then(response =>
-            response.json().then(json => {
+        .then(response => response.json()
+            .then(json => {
                 if (!response.ok) {
                     return Promise.reject(json);
                 }
@@ -85,10 +85,6 @@ export function getCurrentUser() {
         return Promise.reject("No access token set.");
     }
 
-    alert(request({
-        url: API_BASE_URL + "/user/me",
-        method: 'GET'
-    }))
 
     return request({
         url: API_BASE_URL + "/user/me",

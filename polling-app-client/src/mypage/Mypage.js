@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 
-export default class Mypage extends Component {
+class Mypage extends Component {
     render() {
         return (
             <div>
-                마이페이지
+                마이페이지!!
             </div>
         )
     }
 }
+
+export default Mypage;
